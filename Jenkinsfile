@@ -1,3 +1,4 @@
+//Just adding for testing
 node{
     ansiColor('xterm'){ 
         stage('Build Image') {
