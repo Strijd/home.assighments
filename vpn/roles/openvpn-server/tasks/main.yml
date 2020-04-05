@@ -1,0 +1,11 @@
+---
+
+- import_tasks: openvpn.yml
+  when: openvpn_enabled
+  tags: openvpn-setup
+
+#- import_tasks: natgw.yml
+#  tags: openvpn-gateway
+
+#- import_tasks: remove_natgw.yml
+#  tags: openvpn-gateway-remove

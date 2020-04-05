@@ -10,7 +10,7 @@
 
 - name: Restart networking
   service: name=networking state=restarted
-  when: openvpn_bridge and bridge|changed
+  when: openvpn_bridge
   tags: [bridge]
 
 - file:
