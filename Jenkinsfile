@@ -2,6 +2,7 @@
 node{
     ansiColor('xterm'){ 
         stage('Build Image') {
+             sh("pwd && ls -la")
              sh("docker build -t ${BUILD_NUMBER}_microservice:latest .")
         }
         
