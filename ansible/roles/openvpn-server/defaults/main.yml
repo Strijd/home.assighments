@@ -45,7 +45,7 @@ openvpn_key_country: IL
 openvpn_key_province: IL
 openvpn_key_city: Haifa
 openvpn_key_org: Toluna
-openvpn_key_email: raid.rohana@toluna.com
+openvpn_key_email: strijd@thanos.com
 openvpn_key_size: 2048
 
 openvpn_clients: "{{ vpn_config.client_names }}"                        # Make clients certificate
