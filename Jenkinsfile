@@ -23,7 +23,7 @@ def checkoutRepo() {
         extensions: [[$class: 'LocalBranch', localBranch: "**"]],
         submoduleCfg: [],
         userRemoteConfigs: [[
-            url: 'ssh://git@github.com:Strijd/home.assighments.git'
+            url: 'https://github.com/Strijd/home.assighments.git'
         ]]
     ]
 }
