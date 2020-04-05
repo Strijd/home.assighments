@@ -1,0 +1,135 @@
+---
+- name: Get the vpn external IP
+  uri:
+    url: http://checkip.amazonaws.com/
+    return_content: yes
+  register: ip_lookup
+
+- set_fact:
+     vpn_external_ip: "{{ ip_lookup.content | regex_replace('\n','') }}"
+
+- name: Create env key directory
+  file:
+    path: "{{ client_keys_dir }}"
+    state: directory
+    owner: root
+    mode: "0644"
+
+- name: Delete client directory if already exists
+  file:
+    path: "{{ client_keys_dir }}/{{ client_name }}"
+    state: absent
+    force: yes
+
+- name: Create client key directory
+  file:
+    path: "{{ client_keys_dir }}/{{ client_name }}"
+    state: directory
+    owner: root
+    mode: "0644"
+
+- name: Create client keys/certificates
+  command: "{{ openvpn_dir }}/build-client.sh {{ client_keys_dir }}/{{ client_name }}/{{ client_name }}"
+
+- name: Creating openvpn config file
+  template:
+    src: config.j2
+    dest: "{{ client_keys_dir }}/{{ client_name }}/{{ env_name }}.ovpn"
+
+- name: Copy vpn ca and ta certificates
+  copy:
+    src: "{{ item }}"
+    dest: "{{ client_keys_dir }}/{{ client_name }}"
+    remote_src: True
+  with_items:
+    - "{{ openvpn_dir }}/keys/ca.crt"
+    - "{{ openvpn_dir }}/keys/ta.key"
+
+- synchronize:
+     src: "{{ client_keys_dir }}/{{ client_name }}/"
+     dest: "/tmp/{{ env_name }}"
+  delegate_to: "{{ ansible_host }}"
+
+- name: Change permissions
+  file: 
+    path: "/tmp/{{ env_name }}"
+    mode: "0777"
+    recurse: True
+
+- name: Remove {{ client_name }}.zip if exists
+  file:
+    path: /tmp/{{ client_name }}.zip
+    state: absent
+    force: yes
+
+- name: Archive client certs
+  command: "zip -r {{ client_name }}.zip {{ env_name }}"
+  args:
+    chdir: /tmp
+    creates: "{{ client_name }}.zip"
+
+- include_vars: ../vars/main.yml
+- name: Copy vpn files to s3
+  aws_s3:
+    aws_access_key: "{{ access_key }}"
+    aws_secret_key: "{{ secret_key }}"
+    region: "{{ aws_region }}"
+    bucket: toluna-devops
+    object: "/users/vpn/{{ env_name}}/{{ client_name }}.zip"
+    src: "/tmp/{{ client_name }}.zip"
+    mode: put
+  when: is_china is not defined
+
+- name: Copy vpn files to s3 (China)
+  aws_s3:
+    aws_access_key: "{{ cn_access_key }}"
+    aws_secret_key: "{{ cn_secret_key }}"
+    region: "{{ cn_aws_region }}"
+    bucket: toluna-devops
+    object: "/users/vpn/{{ env_name}}/{{ client_name }}.zip"
+    src: "/tmp/{{ client_name }}.zip"
+    mode: put
+  when: is_china is defined
+
+- name: Move client to /etc/openvpn
+  command: "mv /tmp/{{ client_name }}.zip {{ client_keys_dir }}/{{ client_name }}.zip"
+
+- fetch:
+    src: "{{ client_keys_dir }}/{{ client_name }}.zip"
+    dest: "/tmp/{{ client_name }}.zip"
+    flat: True
+
+- name: Send the client via email
+  mail:
+     to: "{{ client_name }}@toluna.com"
+     cc: "devops@toluna.com"
+     subject: "VPN access to {{ env_name }}"
+     attach: "/tmp/{{ client_name }}.zip"
+     secure: never
+     body: |
+        Hi {{ client_name }},
+        VPN clent files for "{{ env_name }}" are attached.
+        Follow "how to instructions" for installing vpn client:
+        https://docs.google.com/document/d/1GWO9Lerbb1MQT2QGGnqG8mgmJNVxtjE4ZM3jgrXgy8k
+        
+        Your host credentials:
+          Username - "{{ client_name }}"
+          Password - "{{ client_name }}1234!"
+        
+        Ragards,
+        DevOps Team
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Cleanup 
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+      - "/tmp/{{ env_name }}"
+      - "{{ client_keys_dir }}/{{ client_name }}.zip"
+  
+- file:
+    path: "/tmp/{{ client_name }}.zip"
+    state: absent
+  delegate_to: localhost

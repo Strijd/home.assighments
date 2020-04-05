@@ -1,0 +1,12 @@
+*nat
+:PREROUTING ACCEPT [218:13478]
+:INPUT ACCEPT [8:574]
+:OUTPUT ACCEPT [103:18171]
+:POSTROUTING ACCEPT [103:18171]
+-A POSTROUTING -s {{ openvpn_server.split(" ")[0] }}/24 ! -d {{ openvpn_server.split(" ")[0] }}/24 -j SNAT --to-source "{{ ansible_default_ipv4.address }}"
+COMMIT
+*filter
+:INPUT ACCEPT [181465:116370024]
+:FORWARD ACCEPT [220974:97331893]
+:OUTPUT ACCEPT [132529:52783266]
+COMMIT

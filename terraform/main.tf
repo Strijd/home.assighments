@@ -1,5 +1,5 @@
 module "vpc" {
-  source            = "/home/anan/transmit/vpc"
+  source            = "./vpc"
   environment       = var.Environment
   aws_access_key    = var.aws_access_key
   aws_secret_key    = var.aws_secret_key
@@ -12,7 +12,7 @@ module "vpc" {
 }
 
 module "ec2" {
-  source            = "/home/anan/transmit/ec2"
+  source            = "./ec2"
   ec2_group         = var.ec2_instance
   vpc_public_subnet_id      = module.vpc.az_public_id
   vpc_private_subnet_id     = module.vpc.az_private_id

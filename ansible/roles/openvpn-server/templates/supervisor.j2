@@ -1,0 +1,12 @@
+[program:openvpn_{{ env_name }}]
+command=openvpn --config /home/DOAdmin/openvpn_{{ env_name }}/{{ openvpn_clients }}.ovpn
+autorestart=true
+user=root
+stdout_events_enabled = true
+stderr_events_enabled = true
+[program:openvpn_{{ env_name}}_route]
+command=/bin/bash -c ~DOAdmin/openvpn_{{ env_name }}/openvpn.sh
+autostart=true
+autorestart=true
+user=root
+
