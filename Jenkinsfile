@@ -10,7 +10,7 @@ node{
         }
         
         stage('Deploy'){
-             sh("docker run -d --rm --name web-test -p 80:8000 crccheck/hello-world")
+             sh("docker run -d --rm --name web-test:${BUILD_NUMBER} -p 80:8000 crccheck/hello-world")
         }
     }
 }
