@@ -1,4 +1,3 @@
-//Just adding for testing
 node{
     ansiColor('xterm'){ 
         stage('chckout'){
