@@ -29,18 +29,19 @@ VPN CLIENT
 Create vpn clients using ansible. 
 navigate to vpn/playbooks directory and run:
 ```bash
-export targetUser <some-user>
-ansible-playbook -i inventory openvpn_client.yml -u ubuntu
+$export targetUser <some-user>
+$ansible-playbook -i inventory openvpn_client.yml -u ubuntu
 ```
 
 #client will be created under /tmp directory on the host that is running ansible 
 
 JENKINS
 ==========
-jenkins is nested on raid-ci server. 
-Note: creds will be sent via email
+jenkins is nested on ci server. Connection is availabe only via vpn. 
+Once connected, you can login to ci server ```http://10.100.1.132:8080``
+Note: creds will be sent via separate email
 
 WEBSITE
 ==========
 Running on same ci server as a docker container. 
-
+#to be contenued 
