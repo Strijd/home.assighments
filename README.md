@@ -38,7 +38,7 @@ $ansible-playbook -i inventory openvpn_client.yml -u ubuntu
 JENKINS
 ==========
 jenkins is nested on ci server. Connection is availabe only via vpn. 
-Once connected, you can login to ci server ```http://10.100.1.132:8080``
+Once connected, you can login to ci server ```http://10.100.1.132:8080```.
 Note: creds will be sent via separate email
 
 WEBSITE
