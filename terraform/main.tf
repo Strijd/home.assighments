@@ -16,7 +16,8 @@ module "ec2" {
   ec2_group         = var.ec2_instance
   vpc_public_subnet_id      = module.vpc.az_public_id
   vpc_private_subnet_id     = module.vpc.az_private_id
-  vpc_security_group_ids = [module.vpc.public_security_groups]
+  vpc_public_security_group_ids = [module.vpc.public_security_groups]
+  vpc_private_security_group_ids = [module.vpc.private_security_groups]
   associate_public_ip_address = true
   env_name          = var.environment_name
 }
