@@ -17,7 +17,7 @@ $terraform init && terraform apply
 ```
 VPN SERVER
 ==========
-VPN server is provisioned via ansible using openvpn software. 
+hostname/tag: raid-vpn-server. - server is provisioned via ansible using openvpn software. 
 Change to vpn/playbooks directory:
 
 ```bash
@@ -35,13 +35,13 @@ $ansible-playbook -i inventory openvpn_client.yml -u ubuntu
 
 #client will be created under /tmp directory on the host that is running ansible 
 
+
 JENKINS
 ==========
-jenkins is nested on ci server. Connection is availabe only via vpn. 
-Once connected, you can login to ci server ```http://10.100.1.132:8080```.
+hostname/tag: raid-ci-server - nested under the public subnet to allow webhook from github. 
+Once connected via the vpn,  you can login to ci server ```http://10.100.1.111:8080```.
 Note: creds will be sent via separate email
 
 WEBSITE
 ==========
-Running on same ci server as a docker container. 
-#to be contenued 
+hostname/tag: raid-web-server. running simple ningix server 

@@ -16,7 +16,6 @@ resource "aws_instance" "this_instance" {
   instance_type = var.ec2_group[count.index]["instance_type"]
   vpc_security_group_ids      = var.vpc_security_group_ids
   subnet_id                   = var.ec2_group[count.index]["type"] == "public" ? var.vpc_public_subnet_id[var.ec2_group[count.index]["az"]] : var.vpc_private_subnet_id[var.ec2_group[count.index]["az"]]
-  #associate_public_ip_address = var.associate_public_ip_address ? true : false
   associate_public_ip_address = var.ec2_group[count.index]["public_ip"] == "true" ? true : false
   source_dest_check           = true
   private_ip                  = var.ec2_group[count.index]["private_ip"]
