@@ -28,10 +28,20 @@ ec2_instance = [
     type      = "public"
   },
   {
+    name       = "ci-server"
+    private_ip = "10.100.1.11"
+    az         = "eu-west-1a"
+    instance_type = "t2.large"
+    public_ip      = true
+    ami       = "ami-0f630a3f40b1eb0b8"
+    type      = "public"
+
+  },
+  {
     name       = "web-server"
     private_ip = "10.100.1.133"
     az         = "eu-west-1a"
-    instance_type = "t2.xlarge"
+    instance_type = "t2.medium"
     public_ip      = false
     ami       = "ami-0f630a3f40b1eb0b8"
     type      = "private"

@@ -13,5 +13,6 @@ vpn-server
 [VPN_SERVER:vars]
 tag_Name="{{ env_name}}-{{ inventory_hostname }}"
 tag_Product="{{ env_name }}"
-ansible_host="34.242.124.153"
+#ansible_host="34.242.124.153"
+ansible_host="10.100.1.10"
 vpn_config={'protocol': "udp", 'dev': "raid", 'network': "192.168.4.0 255.255.255.0", 'client_names': "{{ env_name }}"}
