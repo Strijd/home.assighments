@@ -32,9 +32,17 @@ navigate to vpn/playbooks directory and run:
 $export targetUser <some-user>
 $ansible-playbook -i inventory openvpn_client.yml -u ubuntu
 ```
+Please download openvpn client for your OS: 
+- Windows 10 https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.8-I602-Win10.exe
+- MacOS : follow this link https://openvpn.net/vpn-server-resources/connecting-to-access-server-with-macos/
+- Linux: use your pkg manager 
 
 #client will be created under /tmp directory on the host that is running ansible 
 
+Revoke client: Login to  vpn server and chdir to /etc/openvpn directory 
+```bash 
+$./revoke.sh <client-name> 
+```
 
 JENKINS
 ==========
