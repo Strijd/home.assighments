@@ -1,5 +1,0 @@
----
-# defaults file for openvpn-client
-openvpn_dir: "/etc/openvpn"
-client_keys_dir: "{{ openvpn_dir }}/v"
-client_name: "{{ lookup('env', 'targetUser')}}"

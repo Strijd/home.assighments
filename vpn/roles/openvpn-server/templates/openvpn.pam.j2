@@ -1,9 +1,0 @@
-# {{ ansible_managed }}
-
-{% if openvpn_use_pam_users %}
-auth		required	pam_pwdfile.so pwdfile={{openvpn_etcdir}}/users
-account		required	pam_permit.so
-{% else %}
-@include common-auth
-@include common-account
-{% endif %}

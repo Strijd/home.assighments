@@ -1,8 +1,0 @@
-- hosts: all
-  gather_facts: True
-  become: True
-  become_method: sudo 
-  #  vars:
-  #  ansible_python_interpreter: python
-  roles:
-     - openvpn-client 
